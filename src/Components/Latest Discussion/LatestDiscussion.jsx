@@ -1,6 +1,19 @@
 import React from 'react';
+import UsePost from '../../Hooks/UsePost';
+import { FaComment, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+import PostPage from './PostPage';
+import LoadingSppiner from '../LoadingSppiner';
 
-const LatestDiscussion = ({renderPosts}) => {
+const LatestDiscussion = () => {
+  const  [Postdata,isLoading,refetch]=UsePost()
+  console.log(Postdata)
+ 
+  if(Postdata.length===0){
+    return <LoadingSppiner></LoadingSppiner>
+    
+  }
+
+  if (!Postdata.length) return <p>No posts found.</p>;
     return (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-6">
@@ -16,7 +29,16 @@ const LatestDiscussion = ({renderPosts}) => {
 
         {/* Posts List */}
         <div className="space-y-4">
-          {renderPosts()}
+          {
+            Postdata.map(post=> <PostPage key={post._id} post={post}></PostPage>)
+          }
+         {/* {
+        Postdata.map(post=> (
+         
+        
+          
+        ))
+         } */}
         </div>
 
         {/* Pagination */}

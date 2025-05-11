@@ -1,4 +1,48 @@
+import { Link } from "react-router"
+import { useForm } from "react-hook-form"
+import { useContext } from "react"
+
+import useAuth from "./UseAuth"
+import { toast, ToastContainer } from "react-toastify"
+
+
+
 const  Login =() => {
+   const {signInWithGoogle,signIn}=useAuth()
+    const handaleGoogleLogin=()=>{
+console.log('clicked')
+signInWithGoogle()
+.then(result=>{
+    const user=result.user
+    toast.success('User Login Successfully')
+    console.log(user)
+})
+    }
+
+
+const {
+    register,
+    handleSubmit,
+} = useForm()
+
+
+  const onSubmit = (data) => {
+    console.log(data)
+    signIn(data.email,data.password)
+    .then(userCredential=>{
+        const user=userCredential.user
+        console.log(user)
+        toast.success('user Login Successfully')
+    })
+    .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    toast.error('error')
+    console.log(errorMessage)
+  });
+}
+
+ 
     return (
         <main className="w-full h-screen flex flex-col items-center justify-center bg-gray-50 sm:px-4">
             <div className="w-full space-y-6 text-gray-600 sm:max-w-md">
@@ -6,12 +50,12 @@ const  Login =() => {
                     <img src="https://floatui.com/logo.svg" width={150} className="mx-auto" />
                     <div className="mt-5 space-y-2">
                         <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Log in to your account</h3>
-                        <p className="">Don't have an account? <a href="javascript:void(0)" className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a></p>
+                        <p className="">Don't have an account? <Link to='/signup' className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</Link></p>
                     </div>
                 </div>
                 <div className="bg-white shadow p-4 py-6 space-y-8 sm:p-6 sm:rounded-lg">
                     <div className="grid grid-cols-3 gap-x-3">
-                        <button className="flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100">
+                        <button onClick={handaleGoogleLogin} className="flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100">
                             <svg className="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_17_40)">
                                     <path d="M47.532 24.5528C47.532 22.9214 47.3997 21.2811 47.1175 19.6761H24.48V28.9181H37.4434C36.9055 31.8988 35.177 34.5356 32.6461 36.2111V42.2078H40.3801C44.9217 38.0278 47.532 31.8547 47.532 24.5528Z" fill="#4285F4" />
@@ -55,8 +99,8 @@ const  Login =() => {
                         <span className="block w-full h-px bg-gray-300"></span>
                         <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto">Or continue with</p>
                     </div>
-                    <form
-                        onSubmit={(e) => e.preventDefault()}
+                    <form onSubmit={handleSubmit(onSubmit)}
+                       
                         className="space-y-5"
                     >
                         <div>
@@ -64,6 +108,7 @@ const  Login =() => {
                                 Email
                             </label>
                             <input
+                            {...register("email", { required: true })}
                                 type="email"
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
@@ -74,6 +119,7 @@ const  Login =() => {
                                 Password
                             </label>
                             <input
+                               {...register("password", { required: true })}
                                 type="password"
                                 required
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
@@ -89,6 +135,7 @@ const  Login =() => {
                 <div className="text-center">
                     <a href="javascript:void(0)" className="hover:text-indigo-600">Forgot password?</a>
                 </div>
+                <ToastContainer></ToastContainer>
             </div>
         </main>
     )
