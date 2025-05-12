@@ -9,6 +9,7 @@ const UsePost = () => {
     queryKey: ['Postdata'],
     queryFn: async () => {
       const res = await axiosPublic.get('/posts');
+      console.log(res.data)
       return res.data;
     },
   });

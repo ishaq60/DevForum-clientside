@@ -1,49 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { FaBell, FaSearch, FaThumbsUp, FaThumbsDown, FaComment } from 'react-icons/fa';
+import React, { useState } from 'react';
 import Banner from './Banner/Banner';
-import Announcements from './Announcements';
+import AnnouncementsComponent from './Announcements';
 import LatestDiscussion from './Latest Discussion/LatestDiscussion';
 import Footer from '../layout/Footer/Footer';
-import TagSection from './TagSection';
+import UsePost from '../Hooks/UsePost';
 
 const Home = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [tags, setTags] = useState([]);
-  const [announcements, setAnnouncements] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortByPopularity, setSortByPopularity] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [posts, , isLoading] = UsePost();
 
-  // Dummy data - replace with API calls
  
-  //   return displayPosts.map(post => (
-    
-  //   ));
-  // };
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
-     
-
-      {/* Banner with Search */}
-   <div className='mt-4'>
-   <Banner/>
-   </div>
-
-      {/* Tags Section */}
-     <TagSection tags={tags}/>
+      {/* Banner with Search - pass setSearchTerm to allow search */}
+      <div className='mt-4'>
+        <Banner  setSearchTerm={setSearchTerm}  />
+      </div>
 
       {/* Announcements Section */}
-      <Announcements announcements={announcements}></Announcements>
+      <AnnouncementsComponent />
 
-      {/* Main Content */}
-     <LatestDiscussion />
+      {/* Main Content - Pass filtered posts to LatestDiscussion */}
+      <LatestDiscussion searchTerm={searchTerm} isLoading={isLoading} />
 
       {/* Footer */}
-  
+      <Footer />
     </div>
   );
 };

@@ -1,99 +1,129 @@
-import React from 'react';
-import UsePost from '../../Hooks/UsePost';
-import { FaComment, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
-import PostPage from './PostPage';
-import LoadingSppiner from '../LoadingSppiner';
+import React, { useEffect, useState } from "react";
+import { FaComment, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import PostPage from "./PostPage";
+import LoadingSppiner from "../LoadingSppiner";
+import UsePost from "../../Hooks/UsePost";
 
-const LatestDiscussion = () => {
-  const  [Postdata,isLoading,refetch]=UsePost()
-  console.log(Postdata)
- 
-  if(Postdata.length===0){
-    return <LoadingSppiner></LoadingSppiner>
-    
-  }
+const LatestDiscussion = ({ searchTerm }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemPerPage, setItemPerPage] = useState(5);
+  const [loading, setLoading] = useState(false);
+  const [sortBy, setSortBy] = useState("newest"); // "newest" or "popular"
 
-  if (!Postdata.length) return <p>No posts found.</p>;
-    return (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Latest Discussions</h2>
+  // Fetch total count for pagination
+  const [count, setCount] = useState(0);
+
+  // Fetch posts from the UsePost hook
+  const [posts, , isLoading,refch] = UsePost();
+
+  // Reset to first page when sort type changes
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [sortBy]);
+
+  // Fetch post count for pagination
+  useEffect(() => {
+    fetch("http://localhost:5000/postCount")
+      .then((res) => res.json())
+      .then((data) => setCount(data))
+      .catch((err) => console.error("Fetch count error:", err));
+  }, []);
+
+  // Fetch paginated posts based on the sortBy and pagination settings
+  useEffect(() => {
+    setLoading(true);
+    fetch(`http://localhost:5000/posts?page=${currentPage}&limit=${itemPerPage}&sort=${sortBy}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch posts error:", err);
+        setLoading(false);
+      });
+  }, [currentPage, itemPerPage, sortBy]);
+
+  const numberOfPages = Math.ceil(count / itemPerPage);
+  const pages = Array.from({ length: numberOfPages }, (_, i) => i);
+
+  const handlePageChange = (page) => setCurrentPage(page);
+  const handlePerPageChange = (e) => {
+    setItemPerPage(parseInt(e.target.value));
+    setCurrentPage(0);
+  };
+  const handlePrevious = () => currentPage > 0 && setCurrentPage(currentPage - 1);
+  const handleNext = () => currentPage < numberOfPages - 1 && setCurrentPage(currentPage + 1);
+
+  // Filter posts based on the search term
+ const filteredPosts = searchTerm
+    ? posts.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.tag.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : posts;
+   
+
+  if (isLoading || loading) return <LoadingSppiner />;
+  if (!filteredPosts.length) return <p className="text-center text-gray-500">No posts found.</p>;
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900">Latest Discussions</h2>
+        <div className="flex gap-2">
           <button
-            // onClick={handleSortToggle}
-            className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50"
+            onClick={() => setSortBy("newest")}
+            className={`btn btn-sm ${sortBy === "newest" ? "btn-primary" : "btn-outline"}`}
           >
-            Sort by:
-             {/* {sortByPopularity ? 'Popularity' : 'Newest'} */}
+            Newest
+          </button>
+          <button
+            onClick={() => setSortBy("popular")}
+            className={`btn btn-sm ${sortBy === "popular" ? "btn-primary" : "btn-outline"}`}
+          >
+            Popularity
           </button>
         </div>
-
-        {/* Posts List */}
-        <div className="space-y-4">
-          {
-            Postdata.map(post=> <PostPage key={post._id} post={post}></PostPage>)
-          }
-         {/* {
-        Postdata.map(post=> (
-         
-        
-          
-        ))
-         } */}
-        </div>
-
-        {/* Pagination */}
-        <div className="flex justify-center mt-8">
-          <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-            <a
-              href="#"
-              className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-            >
-              <span className="sr-only">Previous</span>
-              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-            </a>
-            <a
-              href="#"
-              aria-current="page"
-              className="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-            >
-              1
-            </a>
-            <a
-              href="#"
-              className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-            >
-              2
-            </a>
-            <a
-              href="#"
-              className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"
-            >
-              3
-            </a>
-            <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-              ...
-            </span>
-            <a
-              href="#"
-              className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-            >
-              8
-            </a>
-            <a
-              href="#"
-              className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-            >
-              <span className="sr-only">Next</span>
-              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
-            </a>
-          </nav>
-        </div>
       </div>
-    );
+
+      {/* Posts List */}
+      <div className="space-y-4">
+        {filteredPosts.map((post) => (
+          <PostPage key={post._id} post={post} />
+        ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="flex flex-wrap items-center justify-center gap-4 mt-8 p-4 bg-base-100 rounded-xl shadow-md">
+        <button onClick={handlePrevious} className="btn btn-outline btn-sm">Previous</button>
+
+        <div className="join">
+          {pages.map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`join-item btn btn-sm ${currentPage === page ? 'bg-yellow-400 text-white' : 'btn-outline'}`}
+            >
+              {page + 1}
+            </button>
+          ))}
+        </div>
+
+        <button onClick={handleNext} className="btn btn-outline btn-sm">Next</button>
+
+        <select
+          value={itemPerPage}
+          onChange={handlePerPageChange}
+          className="select select-bordered select-sm w-24 ml-4"
+        >
+          <option value="5">5 / page</option>
+          <option value="10">10 / page</option>
+          <option value="20">20 / page</option>
+        </select>
+      </div>
+    </div>
+  );
 };
 
 export default LatestDiscussion;

@@ -3,13 +3,14 @@ import { FaBell, FaBars, FaTimes } from "react-icons/fa";
 import { Link, NavLink } from "react-router"; // ✅ Correct import
 import useAuth from "../../Authentication/UseAuth"; // ✅ Your custom hook
 import { toast } from "react-toastify";
+import UseAnnouncement from "../../Hooks/UseAnnouncement";
 
 const Navbar = () => {
   const { user, logOut } = useAuth(); // 
-  const [announcements] = useState([]);
+
   const [showDropdown, setShowDropdown] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
+const [announcements]=UseAnnouncement()
   const handleLogOut = () => {
     logOut()
       .then(() => {
