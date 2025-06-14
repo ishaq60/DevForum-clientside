@@ -24,7 +24,7 @@ const Home = () => {
       <LatestDiscussion searchTerm={searchTerm} isLoading={isLoading} />
 
       {/* Footer */}
-      <Footer />
+   
     </div>
   );
 };

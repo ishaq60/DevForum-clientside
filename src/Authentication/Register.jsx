@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import useAuth from './UseAuth';
 import { useNavigate } from 'react-router';
 const Register = () => {
+
     const navigate=useNavigate()
     const { createUser,signInWithGoogle}=useAuth()
     const { register, handleSubmit, watch } = useForm();
@@ -25,7 +26,9 @@ const Register = () => {
     const user = userCredential.user;
     console.log(user)
     toast.success('user register successfully')
-    navigate('/')
+   
+     const from = location.state?.from?.pathname || '/';
+      navigate(from, { replace: true });
     // ...
   })
   .catch((error) => {

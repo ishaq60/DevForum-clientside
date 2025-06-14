@@ -12,6 +12,7 @@ import {
   updateProfile,
 } from 'firebase/auth'
 import app from '../Firebase.config'
+import axios from 'axios'
 
 
 
@@ -55,17 +56,40 @@ const AuthProvider = ({ children }) => {
     })
   }
 
+const saveUser = async user => {
+    const currentUser = {
+      email: user?.email,
+      name:user?.displayName,
+      image:user?.photoURL,
+      role: 'guest',
+      SubscriptionStatus: 'Bronze Badge',
+    }
+    const { data } = await axios.put("http://localhost:5000/user",
+      currentUser)
+    return data
+  }
+
+
+
+
+
+
   // onAuthStateChange
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
       setUser(currentUser)
       console.log('CurrentUser-->', currentUser)
+      setUser(currentUser)
+      saveUser(currentUser)
       setLoading(false)
     })
     return () => {
       return unsubscribe()
     }
   }, [])
+
+
+
 
   const authInfo = {
     user,
