@@ -13,6 +13,8 @@ import AdminDashboard from "../Components/Dashboard/AdminDashboard";
 import UserProfile from "../Components/Dashboard/User/UserProfile";
 import AddPost from "../Components/Dashboard/User/AddPost";
 import MyPost from "../Components/Dashboard/User/MyPost";
+import AnnouncementPage from "../Components/Dashboard/Admin/AnnouncementPage";
+import Activities from "../Components/Dashboard/Admin/Activities";
 
 const router = createBrowserRouter([
   {
@@ -58,8 +60,14 @@ const router = createBrowserRouter([
         element: <AddPost />,
       },
       {
-         path:"announcement"
+         path:"announcement",
+         element:<AnnouncementPage></AnnouncementPage>
       },
+      {
+        path:"activities",
+        element:<Activities></Activities>
+      }
+      ,
 
       //user
       {

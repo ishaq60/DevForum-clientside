@@ -23,12 +23,16 @@ import { NavLink, Outlet } from "react-router-dom";
 import SidebarItem from "./sidebar";
 import useAuth from "../../Authentication/UseAuth";
 import { FaRegHandPointRight } from "react-icons/fa";
+import UseAlluser from "../../Hooks/UseAlluser";
+import UseUser from "../../Hooks/UseUser";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const { user } = useAuth();
-  const admin = true; // Replace with actual role check
+  const [users]=UseUser()
+  console.log(users)
+  const isadmin = users?.role==="admin" // Replace with actual role check
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -100,7 +104,7 @@ export default function Dashboard() {
           </div>
 
           <nav className="px-4 space-y-2">
-            {admin ? (
+            {isadmin ? (
               <>
                 <NavLink to="admin">
                   {({ isActive }) => (
