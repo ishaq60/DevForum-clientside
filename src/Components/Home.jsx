@@ -9,6 +9,7 @@ import { Search, Bell, User, MessageCircle, ArrowUp, ArrowDown, Share2, Clock, F
 import PostPage from './Latest Discussion/PostPage';
 import Pageination from './Pageination';
 import Chatbox from './Ai chatbox/Chatbox';
+import { Link } from 'react-router';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -29,18 +30,8 @@ const Home = () => {
 
   const [Postdata, isLoading] = UsePost();
 
-  const announcements = [
-    {
-      id: 1,
-      title: "New Forum Features Released!",
-      description: "We've added new voting and commenting features to enhance your experience."
-    },
-    {
-      id: 2,
-      title: "Weekly Code Challenge",
-      description: "Join our weekly coding challenge and win exciting prizes!"
-    }
-  ];
+
+  
 
   const filteredPosts = Postdata?.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -93,19 +84,7 @@ const Home = () => {
               </div>
             </div>
 
-            {announcements.length > 0 && (
-              <div className="bg-white rounded-xl shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Announcements</h3>
-                <div className="space-y-4">
-                  {announcements.map(announcement => (
-                    <div key={announcement.id} className="border-l-4 border-blue-500 pl-4 py-2">
-                      <h4 className="font-medium text-gray-900">{announcement.title}</h4>
-                      <p className="text-sm text-gray-600 mt-1">{announcement.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+        
           </div>
 
           <div className="lg:col-span-3">
@@ -122,7 +101,7 @@ const Home = () => {
                 </select>
                 <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                   <TrendingUp className="w-4 h-4" />
-                  <span>Sort by Popularity</span>
+                  <Link to="/dashboard/addpost">Sort by Popularity</Link>
                 </button>
               </div>
             </div>

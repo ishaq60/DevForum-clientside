@@ -49,12 +49,13 @@ const Chatbox = () => {
         <div>
                {!isChatOpen && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <h1></h1>
           <button
             onClick={toggleChat}
-            className="fixed bottom-6 right-4 sm:right-6 lg:right-8 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
+            className="fixed bottom-6  sm:right-6 lg:right-8 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
             style={{ right: 'max(1rem, calc((100vw - 1280px) / 2 + 2rem))' }}
           >
-            <Bot className="w-6 h-6" />
+            <span className='text-sm'>Need help?</span><Bot className="w-6 h-6" /> 
           </button>
         </div>
       )}
