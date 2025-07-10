@@ -1,6 +1,6 @@
-import { CardElement } from "@stripe/react-stripe-js";
 import React, { useState } from "react";
-import {loadStripe} from '@stripe/stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import {
   FaCrown,
   FaCheckCircle,
@@ -10,6 +10,9 @@ import {
   FaCcStripe,
 } from "react-icons/fa";
 import CheckOutForm from "./CheckOutForm";
+
+// 👉 Load your Stripe public key
+const stripePromise = loadStripe("pk_test_YOUR_PUBLIC_KEY");
 
 const Membership = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -41,13 +44,6 @@ const Membership = () => {
       buttonText: "Upgrade to Gold",
     },
   ];
-
-
-
-
-
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -147,32 +143,31 @@ const Membership = () => {
                     </div>
                     <FaPlusCircle className="text-green-500" />
                   </button>
-                <button 
-  className="w-full flex items-center justify-between bg-gray-100 p-4 rounded-lg hover:bg-gray-200 transition"
-  onClick={() => setShowForm(!showForm)}
->
-  <div className="flex items-center">
-    <FaCcStripe className="mr-3 text-2xl text-blue-600" />
-    <span>Stripe</span>
-  </div>
 
-  {showForm ? (
-    <FaCheckCircle className="text-green-500" /> // icon after click
-  ) : (
-    <FaPlusCircle className="text-green-500" />  // icon before click
-  )}
-</button>
+                  <button
+                    className="w-full flex items-center justify-between bg-gray-100 p-4 rounded-lg hover:bg-gray-200 transition"
+                    onClick={() => setShowForm(!showForm)}
+                  >
+                    <div className="flex items-center">
+                      <FaCcStripe className="mr-3 text-2xl text-blue-600" />
+                      <span>Stripe</span>
+                    </div>
 
-{showForm && (
-  <div className="mt-4 border p-6 rounded-lg bg-white shadow space-y-4">
-    
-     <CheckOutForm></CheckOutForm>
+                    {showForm ? (
+                      <FaCheckCircle className="text-green-500" />
+                    ) : (
+                      <FaPlusCircle className="text-green-500" />
+                    )}
+                  </button>
 
-    {/* CVC */}
-    
-  </div>
-)}
-
+                  {showForm && (
+                    <div className="mt-4 border p-6 rounded-lg bg-white shadow space-y-4">
+                      {/* ✅ ✅ ✅ FIXED: wrap form in <Elements> */}
+                      <Elements stripe={stripePromise}>
+                        <CheckOutForm />
+                      </Elements>
+                    </div>
+                  )}
                 </div>
               </div>
 

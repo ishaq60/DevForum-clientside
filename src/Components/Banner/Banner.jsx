@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import bannerImage2 from "../../assets/2.jpg";
 
-// The setSearchTerm function is passed as a prop
 const Banner = ({ setSearchTerm }) => {
   const popularTopics = ["Helpdesk", "Introduction", "Payment"];
   const [input, setInput] = useState("");
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    setSearchTerm(input);  // Call setSearchTerm to update the state in the parent component
+    setSearchTerm(input);
   };
 
   const handleTopicClick = (topic) => {
     setInput(topic);
     setSearchTerm(topic);
   };
+
+  // ✅ Automatically reset search when input is cleared
+  useEffect(() => {
+    if (input.trim() === "") {
+      setSearchTerm(""); // triggers full data reload
+    }
+  }, [input, setSearchTerm]);
 
   return (
     <div className="relative w-full h-[450px] overflow-hidden">

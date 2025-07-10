@@ -4,13 +4,13 @@
 
 
 
-import { ArrowDown, ArrowUp, Clock, MessageCircle, Share2 } from "lucide-react";
-import UsePost from "../../Hooks/UsePost";
+import { ArrowDown, ArrowUp, Clock,  MessageCircle, Share2 } from "lucide-react";
 import { Link } from "react-router";
 
-const PostPage = () => {
-  const [Postdata] = UsePost();
 
+const PostPage = ({Postdata}) => {
+ 
+console.log(Postdata)
   const getBadgeColor = (badge) => {
     switch (badge) {
       case "gold":
@@ -90,11 +90,11 @@ const PostPage = () => {
                 <div className="flex items-center space-x-2">
                   <button className="flex items-center space-x-1 text-gray-500 hover:text-green-600 transition-colors">
                     <ArrowUp className="w-5 h-5" />
-                    <span className="text-sm font-medium">{post.votes?.up || 0}</span>
+                    <span className="text-sm font-medium">{post?.upVotes || 0}</span>
                   </button>
                   <button className="flex items-center space-x-1 text-gray-500 hover:text-red-600 transition-colors">
                     <ArrowDown className="w-5 h-5" />
-                    <span className="text-sm font-medium">{post.votes?.down || 0}</span>
+                    <span className="text-sm font-medium">{post?.downVotes || 0}</span>
                   </button>
                 </div>
                 <button className="flex items-center space-x-2 text-gray-500 hover:text-blue-600 transition-colors">
