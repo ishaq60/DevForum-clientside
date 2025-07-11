@@ -23,7 +23,7 @@ console.log(Postdata)
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
       {Postdata?.map((post) => (
        <Link to={`/post/${post._id}`}>
        

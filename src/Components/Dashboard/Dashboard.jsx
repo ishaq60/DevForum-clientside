@@ -59,7 +59,8 @@ export default function Dashboard() {
               alt="User avatar"
             />
             <p className="text-sm font-medium">{user?.displayName}</p>
-            <p className="text-xs text-gray-200">Admin</p>
+            <p className="text-xs text-gray-200">{users?.
+role}</p>
           </div>
           <ChevronDown size={16} className="text-gray-300 mt-2 hidden sm:block" />
           {/* Sidebar toggle button for mobile */}
@@ -94,7 +95,7 @@ export default function Dashboard() {
           </div>
 
           <div className="hidden md:flex items-center justify-between p-4">
-            <h2 className="text-xl font-bold">Admin Panel</h2>
+            <h2 className="text-xl ml-4 font-bold">{users?.role?.toUpperCase()}</h2>
             <button
               onClick={toggleSidebar}
               className="p-1 rounded-lg hover:bg-indigo-700 hidden md:block"

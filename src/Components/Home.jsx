@@ -7,6 +7,8 @@ import { TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import UseLoaderdata from '../Hooks/UseTotaldata';
+import AnnouncementsComponent from './Announcements';
+import TagSection from './TagSection';
 
 
 const Home = () => {
@@ -29,17 +31,7 @@ console.log(pages)
   console.log("Pages:", pages);
   console.log("Current Page:", currentPage);
 
-  const tags = [
-    { id: 'all', name: 'All', count: 234 },
-    { id: 'javascript', name: 'JavaScript', count: 89 },
-    { id: 'react', name: 'React', count: 67 },
-    { id: 'nodejs', name: 'Node.js', count: 45 },
-    { id: 'mongodb', name: 'MongoDB', count: 32 },
-    { id: 'express', name: 'Express', count: 28 },
-    { id: 'css', name: 'CSS', count: 41 },
-    { id: 'html', name: 'HTML', count: 23 },
-    { id: 'technology', name: 'Technology', count: 100 },
-  ];
+ 
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -80,23 +72,12 @@ console.log(pages)
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Popular Tags</h3>
-              <div className="flex flex-wrap gap-2">
-                {tags.map(tag => (
-                  <button
-                    key={tag.id}
-                    onClick={() => setSelectedTag(tag.id)}
-                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                      selectedTag === tag.id
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    {tag.name} ({tag.count})
-                  </button>
-                ))}
-              </div>
+            <div className="bg-white rounded-xl shadow-sm w-full  ">
+            
+              
+                <TagSection setSelectedTag={setSelectedTag} selectedTag={selectedTag}  ></TagSection>
+                <AnnouncementsComponent></AnnouncementsComponent>
+              
             </div>
           </div>
 
@@ -104,6 +85,8 @@ console.log(pages)
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <h2 className="text-2xl font-bold text-gray-900">Latest Discussions</h2>
               <div className="flex items-center space-x-3">
+    
+              
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}

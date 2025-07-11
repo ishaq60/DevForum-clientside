@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { Bell, Calendar, User, ChevronRight, ExternalLink } from "lucide-react";
+import { Bell, Calendar, ChevronRight, ExternalLink } from "lucide-react";
 import UseAnnouncement from "../Hooks/UseAnnouncement";
 
 const AnnouncementsComponent = () => {
-const [annonce,setannonce]=useState(1)
-  const [announcements]=UseAnnouncement()
-  console.log(announcements)
-  // Sample data - in a real app, this would come from props or an API
-  
-  // Function to get priority badge
+  const [showAll, setShowAll] = useState(false); // toggle state
+  const [announcements] = UseAnnouncement();
+
+  // Toggle view all / view less
+  const handleToggle = () => {
+    setShowAll(prev => !prev);
+  };
+
+  // Badge display
   const getPriorityBadge = (priority) => {
-    switch(priority) {
+    switch (priority) {
       case "high":
         return <span className="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">High Priority</span>;
       case "medium":
@@ -20,9 +23,9 @@ const [annonce,setannonce]=useState(1)
     }
   };
 
-  // Function to get announcement icon
+  // Icon display
   const getAnnouncementIcon = (type) => {
-    switch(type) {
+    switch (type) {
       case "maintenance":
         return <div className="p-2 bg-blue-100 rounded-full"><Bell size={18} className="text-blue-600" /></div>;
       case "feature":
@@ -33,29 +36,30 @@ const [annonce,setannonce]=useState(1)
         return <div className="p-2 bg-gray-100 rounded-full"><Bell size={18} className="text-gray-600" /></div>;
     }
   };
-const handleShowannocunce=(annonce)=>{
-  setannonce(announcements.length)
-}
+
   return (
-    <div className="bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-gray-800">
-            Announcements
-          </h2>
-          <button onClick={()=>handleShowannocunce(annonce)} className="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
-            View all <ChevronRight size={16} />
-          </button>
+    <div className="bg-gray-50 w-full  mt-12">
+      <div className=" mx-auto ">
+        <div className="flex gap-2 justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-gray-800">Announcements</h2>
+          {announcements.length > 1 && (
+            <button
+              onClick={handleToggle}
+              className="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center"
+            >
+              {showAll ? "Show Less" : "View All"} <ChevronRight size={16} />
+            </button>
+          )}
         </div>
-        
+
         {announcements.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-6 text-center">
             <Bell size={36} className="mx-auto text-gray-400 mb-2" />
             <p className="text-gray-500">No announcements at this time</p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {announcements.slice(0,annonce).map((announcement) => (
+          <div className="space-y-4 z-50 relative">
+            {(showAll ? announcements : announcements.slice(0, 1)).map((announcement) => (
               <div
                 key={announcement._id}
                 className="bg-white rounded-lg shadow hover:shadow-md transition-shadow duration-300 p-4"
@@ -84,11 +88,12 @@ const handleShowannocunce=(annonce)=>{
                           <div className="text-xs text-gray-500">{announcement.author.role}</div>
                         </div>
                       </div>
-                      <div className="text-sm text-gray-500 flex items-center">
+                      
+                    </div>
+                    <div className="text-sm text-gray-500 flex items-center">
                         <Calendar size={14} className="mr-1" />
                         {announcement.date}
                       </div>
-                    </div>
                   </div>
                 </div>
               </div>
