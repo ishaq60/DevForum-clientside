@@ -1,145 +1,162 @@
 import React, { useState } from "react";
-import { FaBell, FaBars, FaTimes } from "react-icons/fa";
-import { Link, NavLink } from "react-router"; // ✅ Correct import
-import useAuth from "../../Authentication/UseAuth"; // ✅ Your custom hook
+import { Link, NavLink } from "react-router-dom";
+import { FaBars, FaTimes, FaBell } from "react-icons/fa";
+import useAuth from "../../Authentication/UseAuth";
 import { toast } from "react-toastify";
 import UseAnnouncement from "../../Hooks/UseAnnouncement";
 
 const Navbar = () => {
-  const { user, logOut } = useAuth(); // 
-
-  const [showDropdown, setShowDropdown] = useState(false);
+  const { user, logOut } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-const [announcements]=UseAnnouncement()
-  const handleLogOut = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [announcements] = UseAnnouncement();
+
+  const handleLogout = () => {
     logOut()
       .then(() => {
-        console.log("User logged out");
-        setShowDropdown(false); 
-        toast.success('User Logout successfully')
+        toast.success("Logged out");
+        setDropdownOpen(false);
+        setMenuOpen(false);
       })
-      .catch((error) => {
-        console.error("Logout failed:", error);
-      });
+      .catch((err) => console.error(err));
   };
 
   return (
-    <nav className="bg-indigo-700 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          {/* Logo and Site Name */}
-          <div className="flex items-center">
-            <svg
-              className="h-8 w-8 text-white"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-4-8c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4-4-1.79-4-4z" />
+    <nav className="bg-indigo-700 text-white shadow-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        {/* Logo & Brand */}
+        <div className="flex items-center">
+          <Link to="/" className="flex items-center space-x-2">
+            <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="4" className="text-indigo-200" />
             </svg>
-          <Link to="/">  <span className="ml-2 text-white text-xl font-bold">DevForum</span></Link>
-            <div className="hidden md:flex space-x-6 ml-6">
-              <NavLink
-                to="/"
-                className="text-white hover:text-indigo-200 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Home
-              </NavLink>
-              <NavLink
-                to="/membership"
-                className="text-white hover:text-indigo-200 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Membership
-              </NavLink>
-            </div>
+            <span className="font-bold text-xl">DevForum</span>
+          </Link>
+
+          {/* Desktop Links */}
+          <div className="hidden md:flex space-x-6 ml-8">
+            <NavLink
+              to="/"
+              className="hover:text-indigo-200 text-sm font-medium"
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/membership"
+              className="hover:text-indigo-200 text-sm font-medium"
+            >
+              Membership
+            </NavLink>
           </div>
+        </div>
 
-          {/* Right Section */}
-          <div className="flex items-center space-x-4">
-            {/* Notification */}
-            <button className="relative text-white hover:text-indigo-200 p-1 focus:outline-none">
-              <FaBell className="h-6 w-6" />
-              {announcements.length > 0 && (
-                <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {announcements.length}
-                </span>
-              )}
-            </button>
-
-            {/* Auth Section */}
-            {user ? (
-              <div className="relative">
-                <button
-                  onClick={() => setShowDropdown(!showDropdown)}
-                  className="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-white"
-                >
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src={user?.photoURL}
-                    alt="User avatar"
-                  />
-                </button>
-                {showDropdown && (
-                  <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20">
-                    <div className="px-4 py-2 text-sm text-gray-700 border-b">
-                      {user?.displayName}
-                    </div>
-                    <Link
-                      to="/dashboard"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Dashboard
-                    </Link>
-                    <button
-                      onClick={handleLogOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link
-                to="/login"
-                className="px-4 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500"
-              >
-                Join Us
-              </Link>
+        {/* Right Section */}
+        <div className="flex items-center space-x-4">
+          {/* Notification */}
+          <div className="relative">
+            <FaBell className="w-5 h-5 hover:text-indigo-200" />
+            {announcements.length > 0 && (
+              <span className="absolute -top-1 -right-2 bg-red-500 text-xs rounded-full px-1">
+                {announcements.length}
+              </span>
             )}
-
-            {/* Hamburger Icon for Mobile */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="text-white focus:outline-none"
-              >
-                {menuOpen ? <FaTimes /> : <FaBars />}
-              </button>
-            </div>
           </div>
+
+          {/* Auth */}
+          {user ? (
+            <div className="relative hidden md:block">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="focus:outline-none"
+              >
+                <img
+                  src={user.photoURL}
+                  alt="User"
+                  className="w-8 h-8 rounded-full border border-white"
+                />
+              </button>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-indigo-800 text-white  rounded shadow z-50">
+                  <div className="px-4 py-3 border-b">{user.displayName}</div>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setDropdownOpen(false)}
+                    className="px-4 py-2 "
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full  px-4 py-2 "
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="hidden md:inline-block px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded text-sm"
+            >
+              Join Us
+            </Link>
+          )}
+
+          {/* Mobile Hamburger */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden focus:outline-none"
+          >
+            {menuOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden fixed top-8 left-0 w-64 h-auto bg-indigo-800 shadow-lg z-50 p-6">
-          <button
+        <div className="md:hidden bg-indigo-800 px-4 py-4 space-y-4">
+          <NavLink
+            to="/"
             onClick={() => setMenuOpen(false)}
-            className="text-white mb-6"
+            className="block text-white hover:text-indigo-200 text-lg"
           >
-            <FaTimes size={20} />
-          </button>
-          <nav className="flex flex-col space-y-4">
-            <Link to="/" className="text-white hover:text-indigo-200 text-lg">
-              Home
-            </Link>
-            <Link
-              to="/membership"
-              className="text-white hover:text-indigo-200 text-lg"
+            Home
+          </NavLink>
+          <NavLink
+            to="/membership"
+            onClick={() => setMenuOpen(false)}
+            className="block text-white hover:text-indigo-200 text-lg"
+          >
+            Membership
+          </NavLink>
+
+          {user ? (
+            <>
+              <NavLink
+                to="/dashboard"
+                onClick={() => setMenuOpen(false)}
+                className="block text-white justify-center hover:text-indigo-200 text-lg"
+              >
+                Dashboard
+              </NavLink>
+              <button
+                onClick={handleLogout}
+                className=" flex-1  space-y-4 text-white hover:text-indigo-200 text-lg"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <NavLink
+              to="/login"
+              onClick={() => setMenuOpen(false)}
+              className="block text-white hover:text-indigo-200 text-lg"
             >
-              Membership
-            </Link>
-          </nav>
+              Login
+            </NavLink>
+          )}
         </div>
       )}
     </nav>
