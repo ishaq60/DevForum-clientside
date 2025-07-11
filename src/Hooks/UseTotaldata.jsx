@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import UseaxiosPublic from './UseaxiosPublic';
 
 
-const  UseLoaderdata = () => {
+const  UseTotaldata = () => {
   const axiosPublic = UseaxiosPublic();
 
   const { data: count = [], refetch, isLoading } = useQuery({
@@ -17,4 +17,4 @@ const  UseLoaderdata = () => {
   return [count, refetch, isLoading];
 };
 
-export default UseLoaderdata;
+export default UseTotaldata;

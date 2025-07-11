@@ -6,9 +6,12 @@ import Chatbox from './Ai chatbox/Chatbox';
 import { TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import UseLoaderdata from '../Hooks/UseTotaldata';
+
 import AnnouncementsComponent from './Announcements';
 import TagSection from './TagSection';
+
+import UsePost from '../Hooks/UsePost';
+import UseTotaldata from '../Hooks/UseTotaldata';
 
 
 const Home = () => {
@@ -18,16 +21,16 @@ const Home = () => {
   const [Postdata, setPostdata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [count]=UseLoaderdata()
-  console.log(count)
+const [Postdatas]=UsePost()
+  const [count]=UseTotaldata()
+  console.log(Postdatas)
   
   const itemPerPage = 5; // ✅ fixed casing
 
   const numberOfPages = Math.max(1, Math.ceil(count / itemPerPage));
   const pages = Array.from({ length: numberOfPages }, (_, i) => i);
-console.log(pages)
-  console.log("Count:", count);
+  console.log(pages)
+  console.log("Count S:", count);
   console.log("Pages:", pages);
   console.log("Current Page:", currentPage);
 

@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 const Pageination = ({  numberOfPages, setCurrentPage, currentPage,pages }) => {
   console.log( numberOfPages)

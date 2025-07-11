@@ -2,7 +2,7 @@ import { Calendar, ChevronDown } from 'lucide-react';
 import React from 'react';
 
 const AdminDashboard = () => {
-  const admin=false
+  const admin=true
   return (
    
  <div className="p-6 mr-20">

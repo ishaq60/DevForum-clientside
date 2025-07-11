@@ -107,7 +107,7 @@ role}</p>
           <nav className="px-4 space-y-2">
             {isadmin ? (
               <>
-                <NavLink to="admin">
+                <NavLink to="">
                   {({ isActive }) => (
                     <SidebarItem
                       icon={<Home size={20} />}
