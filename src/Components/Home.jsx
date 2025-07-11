@@ -4,8 +4,10 @@ import PostPage from './Latest Discussion/PostPage';
 import Pageination from './Pageination';
 import Chatbox from './Ai chatbox/Chatbox';
 import { TrendingUp } from 'lucide-react';
-import { Link } from 'react-router-dom'; // ✅ correct import
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import UseLoaderdata from '../Hooks/UseTotaldata';
+
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +15,19 @@ const Home = () => {
   const [selectedTag, setSelectedTag] = useState('all');
   const [Postdata, setPostdata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [count]=UseLoaderdata()
+  console.log(count)
+  
+  const itemPerPage = 5; // ✅ fixed casing
+
+  const numberOfPages = Math.max(1, Math.ceil(count / itemPerPage));
+  const pages = Array.from({ length: numberOfPages }, (_, i) => i);
+console.log(pages)
+  console.log("Count:", count);
+  console.log("Pages:", pages);
+  console.log("Current Page:", currentPage);
 
   const tags = [
     { id: 'all', name: 'All', count: 234 },
@@ -29,10 +44,15 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       setIsLoading(true);
-      
       try {
-        const res = await axios.get(`http://localhost:5000/posts?q=${searchTerm}&tag=${selectedTag}`);
-        // Fix here: use res.data.posts, because backend sends { posts: [...] }
+        const res = await axios.get(`http://localhost:5000/posts`, {
+          params: {
+            q: searchTerm,
+            tag: selectedTag,
+            limit: itemPerPage, // ✅ use correct variable name
+            page: currentPage,
+          },
+        });
         setPostdata(res.data.posts || []);
       } catch (err) {
         console.error(err);
@@ -42,16 +62,15 @@ const Home = () => {
     };
 
     fetchPosts();
-  }, [searchTerm, selectedTag]);
+  }, [searchTerm, selectedTag, currentPage]);
 
-  // Sort posts by popularity or keep backend ordering (newest)
   const sortedPosts = [...Postdata].sort((a, b) => {
     if (sortBy === 'popularity') {
       return (b.upVotes - b.downVotes) - (a.upVotes - a.downVotes);
     }
-    return 0; // Backend handles newest order
+    return 0;
   });
-console.log(Postdata)
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mt-4">
@@ -60,7 +79,6 @@ console.log(Postdata)
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Popular Tags</h3>
@@ -82,7 +100,6 @@ console.log(Postdata)
             </div>
           </div>
 
-          {/* Main Content */}
           <div className="lg:col-span-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <h2 className="text-2xl font-bold text-gray-900">Latest Discussions</h2>
@@ -105,8 +122,8 @@ console.log(Postdata)
               </div>
             </div>
 
-            <PostPage Postdata={Postdata} isLoading={isLoading} />
-            <Pageination />
+            <PostPage Postdata={sortedPosts} isLoading={isLoading} />
+            <Pageination pages={pages} numberOfPages={numberOfPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           </div>
         </div>
       </div>
