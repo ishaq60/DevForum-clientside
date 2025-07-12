@@ -1,7 +1,12 @@
 import React from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import UseUser from '../../Hooks/UseUser';
+import { toast } from 'react-toastify';
 
 const CheckOutForm = () => {
+  const [user]=UseUser()
+  console.log(user.email)
+  console.log(user)
   const stripe = useStripe();
   const elements = useElements();
 
@@ -14,11 +19,12 @@ const CheckOutForm = () => {
     if (!card) return;
 
     // 👉 Call your backend to create a PaymentIntent
-    const res = await fetch('/create-payment-intent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: 5000 }), // $50.00 for example
-    });
+ const res = await fetch('http://localhost:5000/create-payment-intent', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ amount: 5000 }),
+});
+
 
     const { clientSecret } = await res.json();
 
@@ -34,8 +40,20 @@ const CheckOutForm = () => {
       alert(result.error.message);
     } else {
       if (result.paymentIntent.status === 'succeeded') {
-        console.log('Payment succeeded:', result.paymentIntent);
-        alert('Payment succeeded!');
+
+   // get this from context/session
+    const patchRes = await fetch(`http://localhost:5000/make-gold-member/${user.email}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ goldMembership: true }),
+    });
+
+    const patchResult = await patchRes.json();
+    console.log('User upgraded:', patchResult);
+     console.log('Payment succeeded:', result.paymentIntent);
+        toast.success("")
+    toast.success('Gold membership activated!');
+
       }
     }
   };

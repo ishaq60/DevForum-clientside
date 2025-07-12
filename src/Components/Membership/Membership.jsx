@@ -10,9 +10,10 @@ import {
   FaCcStripe,
 } from "react-icons/fa";
 import CheckOutForm from "./CheckOutForm";
+import UseUser from "../../Hooks/UseUser";
 
 // 👉 Load your Stripe public key
-const stripePromise = loadStripe("pk_test_YOUR_PUBLIC_KEY");
+const stripePromise = loadStripe(import.meta.env.VITE_payment_GATEWAY_PK);
 
 const Membership = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -44,6 +45,9 @@ const Membership = () => {
       buttonText: "Upgrade to Gold",
     },
   ];
+
+  const [user]=UseUser()
+  console.log(user.SubscriptionStatus)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -107,18 +111,28 @@ const Membership = () => {
                     </li>
                   ))}
                 </ul>
+<button
+  className={`w-full py-3 rounded-lg font-bold transition-all 
+    ${
+      plan.id === "gold"
+        ? user?.SubscriptionStatus === "Gold Badge"
+          ? "bg-green-500 text-white cursor-default"
+          : "bg-yellow-500 hover:bg-yellow-600 text-white"
+        : "bg-gray-200 text-gray-500 cursor-default"
+    }`}
+  disabled={plan.id === "gold" && user?.SubscriptionStatus === "Gold Badge"}
+  onClick={() =>
+    plan.id === "gold" &&
+    user?.SubscriptionStatus !== "Gold Badge" &&
+    setSelectedPlan(plan)
+  }
+>
+  {plan.id === "gold" && user?.SubscriptionStatus === "Gold Badge"
+    ? "Activated"
+    : plan.buttonText}
+</button>
 
-                <button
-                  className={`w-full py-3 rounded-lg font-bold transition-all 
-                    ${
-                      plan.id === "gold"
-                        ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-                        : "bg-gray-200 text-gray-500 cursor-default"
-                    }`}
-                  onClick={() => plan.id === "gold" && setSelectedPlan(plan)}
-                >
-                  {plan.buttonText}
-                </button>
+
               </div>
             </div>
           ))}
