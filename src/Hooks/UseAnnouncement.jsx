@@ -9,7 +9,7 @@ const UseAnnouncement = () => {
     queryKey: ['announcements'],
     queryFn: async () => {
       const res = await axiosPublic.get('/announcement');
-   console.log(res.data)
+  
       return res.data;
 
     },

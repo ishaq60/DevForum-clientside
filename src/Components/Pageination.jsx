@@ -1,7 +1,7 @@
 
 
 const Pageination = ({  numberOfPages, setCurrentPage, currentPage,pages }) => {
-  console.log( numberOfPages)
+ 
   return (
     <div className="mt-8 flex justify-center">
       <nav className="flex items-center space-x-2">

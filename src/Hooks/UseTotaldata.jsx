@@ -9,7 +9,7 @@ const  UseTotaldata = () => {
     queryKey: ['count'],
     queryFn: async () => {
       const res = await axiosPublic.get('/postcount');
-      console.log(res.data)
+  
       return res.data;
     },
   });

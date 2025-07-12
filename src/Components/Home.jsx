@@ -29,12 +29,7 @@ const [Postdatas]=UsePost()
 
   const numberOfPages = Math.max(1, Math.ceil(count / itemPerPage));
   const pages = Array.from({ length: numberOfPages }, (_, i) => i);
-  console.log(pages)
-  console.log("Count S:", count);
-  console.log("Pages:", pages);
-  console.log("Current Page:", currentPage);
 
- 
 
   useEffect(() => {
     const fetchPosts = async () => {

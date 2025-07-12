@@ -10,7 +10,7 @@ import { Link } from "react-router";
 
 const PostPage = ({Postdata}) => {
  
-console.log(Postdata)
+
   const getBadgeColor = (badge) => {
     switch (badge) {
       case "gold":
