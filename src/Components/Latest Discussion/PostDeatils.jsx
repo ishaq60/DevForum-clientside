@@ -76,18 +76,33 @@ const PostDetailsPage = () => {
     console.error('Error updating post:', error);
   }
 };
-const hanndaleVoteCount=async (count)=>{
-  const vote={
-    vote:count
+const hanndaleVoteCount = async (voteType) => {
+  if (!user?.email) {
+    toast.error("You must be logged in to vote.");
+    return;
   }
-    try {
-    const response = await axios.post(`http://localhost:5000/votecount/${id}`,vote);
-    console.log('Comment added:', response.data.success);
-    refetch()
-  } catch (error) {
-    console.error('Error updating post:', error);
+
+  try {
+    const response = await axios.post(
+      `http://localhost:5000/votecount/${id}`,
+      {
+        vote: voteType,
+        user: user.email
+      }
+    );
+
+    if (response.data.success) {
+      toast.success("Vote updated!");
+      refetch();
+    } else {
+      toast.error("Vote failed!");
+    }
+  } catch (err) {
+    console.error(err);
+    toast.error("Error voting!");
   }
-}
+};
+
 refetch()
   return (
     <div className="bg-blue-50 min-h-screen pt-8 pb-16">
@@ -131,35 +146,25 @@ refetch()
 
           {/* Action Bar */}
           <div className="flex items-center justify-between px-6 py-4 bg-blue-100 border-t border-blue-200">
-            <div className="flex items-center space-x-6">
-              {/* Vote Section */}
-              <div className="flex items-center space-x-2">
-                <button
-                  className="p-1.5 rounded-full hover:bg-blue-200 transition duration-200"
-                  aria-label="Upvote"
-                >
-                  <FaArrowUp  onClick={()=>hanndaleVoteCount('up')}   className="w-5 h-5 text-blue-600" />
-                </button>
-                <span className="font-medium text-blue-800">
-                  {post.upVotes}
-                </span>
-                <FaArrowDown onClick={()=>hanndaleVoteCount('down')} className="w-5 h-5 text-blue-600" />
-                <button 
-                  className="p-1.5 rounded-full hover:bg-blue-200 transition duration-200"
-                  aria-label="Downvote"
-                >
-                  <span className="font-medium text-blue-800">
-                    {post.downVotes}
-                  </span>
-                </button>
-              </div>
+          <div className="flex items-center space-x-2">
+  <button
+    className="p-1.5 rounded-full hover:bg-blue-200 transition duration-200"
+    aria-label="Upvote"
+    onClick={() => hanndaleVoteCount("up")}
+  >
+    <FaArrowUp className="w-5 h-5 text-blue-600" />
+  </button>
+  <span className="font-medium text-blue-800">{post.upVotes}</span>
 
-              {/* Comment Button */}
-              <button className="flex items-center text-blue-600 hover:text-blue-800 transition duration-200">
-                <FaRegComment className="w-5 h-5 mr-2" />
-                <span>{post.commentsCount} Comments</span>
-              </button>
-            </div>
+  <button
+    className="p-1.5 rounded-full hover:bg-blue-200 transition duration-200"
+    aria-label="Downvote"
+    onClick={() => hanndaleVoteCount("down")}
+  >
+    <FaArrowDown className="w-5 h-5 text-blue-600" />
+  </button>
+  <span className="font-medium text-blue-800">{post.downVotes}</span>
+</div>
 
             {/* Share Button */}
             <div className="group relative h-40 ">
