@@ -17,27 +17,38 @@ const Chatbox = () => {
   const minimizeChat = () => {
     setIsMinimized(true);
   };
+const sendMessage = async () => {
+  if (inputMessage.trim()) {
+    const newMessage = {
+      id: chatMessages.length + 1,
+      text: inputMessage,
+      sender: 'user'
+    };
+    setChatMessages([...chatMessages, newMessage]);
+    setInputMessage('');
 
-  const sendMessage = () => {
-    if (inputMessage.trim()) {
-      const newMessage = {
-        id: chatMessages.length + 1,
-        text: inputMessage,
-        sender: 'user'
+    try {
+      // Call your backend route
+      const res = await fetch('http://localhost:5000/ask-gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: inputMessage }),
+      });
+
+      const data = await res.json();
+
+      const aiResponse = {
+        id: chatMessages.length + 2,
+        text: data.answer,
+        sender: 'ai'
       };
-      setChatMessages([...chatMessages, newMessage]);
-      setInputMessage('');
-
-      setTimeout(() => {
-        const aiResponse = {
-          id: chatMessages.length + 2,
-          text: "Thanks for your message! I'm here to help with any questions about coding, forums, or anything else.",
-          sender: 'ai'
-        };
-        setChatMessages(prev => [...prev, aiResponse]);
-      }, 1000);
+      setChatMessages(prev => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('Error:', error);
     }
-  };
+  }
+};
+
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
