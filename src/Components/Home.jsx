@@ -35,7 +35,7 @@ const [Postdatas]=UsePost()
     const fetchPosts = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get(`http://localhost:5000/posts`, {
+        const res = await axios.get(`https://devforum-server.vercel.app/posts`, {
           params: {
             q: searchTerm,
             tag: selectedTag,

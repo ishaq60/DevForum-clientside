@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 import bannerImage2 from "../../assets/2.jpg";
 
 const Banner = ({ setSearchTerm }) => {
-  const popularTopics = ["JavaScript,React", "Blockchain", "Payment"];
+  const popularTopics = ["JavaScript","React", "Blockchain", "Payment"];
   const [input, setInput] = useState("");
 
   const handleSearchSubmit = (e) => {

@@ -19,7 +19,7 @@ const CheckOutForm = () => {
     if (!card) return;
 
     // 👉 Call your backend to create a PaymentIntent
- const res = await fetch('http://localhost:5000/create-payment-intent', {
+ const res = await fetch('https://devforum-server.vercel.app/create-payment-intent', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ amount: 5000 }),
@@ -42,7 +42,7 @@ const CheckOutForm = () => {
       if (result.paymentIntent.status === 'succeeded') {
 
    // get this from context/session
-    const patchRes = await fetch(`http://localhost:5000/make-gold-member/${user.email}`, {
+    const patchRes = await fetch(`https://devforum-server.vercel.app/make-gold-member/${user.email}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ goldMembership: true }),

@@ -38,7 +38,7 @@ const PostDetailsPage = () => {
   } = useQuery({
     queryKey: ["post", id],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:5000/post/${id}`);
+      const res = await axios.get(`https://devforum-server.vercel.app/post/${id}`);
       return res.data;
     },
     enabled: !!id,
@@ -64,7 +64,7 @@ const PostDetailsPage = () => {
   };
 
   try {
-    const response = await axios.patch(`http://localhost:5000/comment/${id}`, newComment);
+    const response = await axios.patch(`https://devforum-server.vercel.app/comment/${id}`, newComment);
     console.log('Comment added:', response.data.success);
   if(response.data.success==true){
     toast.success('comment added successfully')
@@ -84,7 +84,7 @@ const hanndaleVoteCount = async (voteType) => {
 
   try {
     const response = await axios.post(
-      `http://localhost:5000/votecount/${id}`,
+      `https://devforum-server.vercel.app/votecount/${id}`,
       {
         vote: voteType,
         user: user.email

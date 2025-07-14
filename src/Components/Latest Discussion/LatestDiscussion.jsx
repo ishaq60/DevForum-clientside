@@ -23,7 +23,7 @@ const LatestDiscussion = ({ searchTerm }) => {
 
   // Fetch post count for pagination
   useEffect(() => {
-    fetch("http://localhost:5000/postCount")
+    fetch("https://devforum-server.vercel.app/postCount")
       .then((res) => res.json())
       .then((data) => setCount(data))
       .catch((err) => console.error("Fetch count error:", err));
@@ -32,7 +32,7 @@ const LatestDiscussion = ({ searchTerm }) => {
   // Fetch paginated posts based on the sortBy and pagination settings
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/posts?page=${currentPage}&limit=${itemPerPage}&sort=${sortBy}`)
+    fetch(`https://devforum-server.vercel.app/posts?page=${currentPage}&limit=${itemPerPage}&sort=${sortBy}`)
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);

@@ -4,7 +4,7 @@ import React from 'react';
 const AdminProfile = ({data,user,totaluser}) => {
     return (
         <div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+            <div className="bg-white rounded-xl shadow-sm border mt- border-gray-200 p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">
             Admin Profile
           </h2>

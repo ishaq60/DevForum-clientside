@@ -29,7 +29,7 @@ const sendMessage = async () => {
 
     try {
       // Call your backend route
-      const res = await fetch('http://localhost:5000/ask-gemini', {
+      const res = await fetch('https://devforum-server.vercel.app/ask-gemini', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: inputMessage }),
