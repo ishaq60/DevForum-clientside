@@ -77,18 +77,19 @@ const Navbar = () => {
                 />
               </button>
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-indigo-800 text-white  rounded shadow z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-indigo-800 text-white   rounded shadow z-50">
                   <div className="px-4 py-3 border-b">{user.displayName}</div>
                   <Link
                     to="/dashboard"
                     onClick={() => setDropdownOpen(false)}
-                    className="px-4 py-2 "
+                    className="px-4 py-2 hover:bg-gray-600 "
                   >
                     Dashboard
                   </Link>
-                  <button
+                  <br />
+                  <button 
                     onClick={handleLogout}
-                    className="w-full  px-4 py-2 "
+                    className="px-4 hover:bg-gray-600 "
                   >
                     Logout
                   </button>

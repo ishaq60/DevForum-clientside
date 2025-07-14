@@ -109,7 +109,7 @@ const [Postdatas]=UsePost()
         </div>
       </div>
 
-      <Chatbox />
+
     </div>
   );
 };

@@ -1,63 +1,53 @@
 import React from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import useAuth from './UseAuth';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+
 const Register = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { createUser, signInWithGoogle, updateUserProfile } = useAuth();
+  const { register, handleSubmit } = useForm();
 
-    const navigate=useNavigate()
-    const { createUser,signInWithGoogle}=useAuth()
-    const { register, handleSubmit, watch } = useForm();
-  const onSubmit = data => {
-  console.log(data);
+  // ✅ FIXED: onSubmit runs when form submits
+  const onSubmit = (data) => {
+    createUser(data.email, data.password)
+      .then((result) => {
+        return updateUserProfile(data.name);
+      })
+      .then(() => {
+        toast.success('User registered successfully');
+        const from = location.state?.from?.pathname || '/';
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(error.message);
+      });
+  };
 
-  if (data.password.length < 6) {
-    return toast.error('Password must be at least six characters');
-  }
-
-  const hasUpperCase = /[A-Z]/.test(data.password);
-  if (!hasUpperCase) {
-    return toast.error('Password must include at least one uppercase letter');
-  }
-
-   createUser(data.email,data.password)
-   .then((userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    console.log(user)
-    toast.success('user register successfully')
-   
-     const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
-};
-
-
-    const handaleGoogleLogin=()=>{
-console.log('clicked')
-signInWithGoogle()
-.then(result=>{
-    const user=result.user
-    toast.success('User Login Successfully')
-    console.log(user)
-    navigate('/')
-})
-    }
+  const handleGoogleLogin = () => {
+    signInWithGoogle()
+      .then(result => {
+        toast.success('User Login Successfully');
+        navigate('/');
+      })
+      .catch(error => {
+        console.error(error);
+        toast.error('Google sign-in failed');
+      });
+  };
 
     return (
         <div>
              <main className="w-full flex">
             <div className="relative flex-1 hidden items-center justify-center h-screen bg-gray-900 lg:flex">
                 <div className="relative z-10 w-full max-w-md">
-                    <img src="https://floatui.com/logo-dark.svg" width={150} />
+                 
                     <div className=" mt-16 space-y-3">
-                        <h3 className="text-white text-3xl font-bold">Start growing your business quickly</h3>
+                        <h3 className="text-white text-3xl font-bold">Start read and writing Blogs !</h3>
                         <p className="text-gray-300">
                             Create an account and get access to all features for 30-days, No credit card required.
                         </p>
@@ -92,7 +82,7 @@ signInWithGoogle()
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-x-3">
-                        <button onClick={handaleGoogleLogin} className="flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100">
+                        <button onClick={handleGoogleLogin} className="flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100">
                             <svg className="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_17_40)">
                                     <path d="M47.532 24.5528C47.532 22.9214 47.3997 21.2811 47.1175 19.6761H24.48V28.9181H37.4434C36.9055 31.8988 35.177 34.5356 32.6461 36.2111V42.2078H40.3801C44.9217 38.0278 47.532 31.8547 47.532 24.5528Z" fill="#4285F4" />
