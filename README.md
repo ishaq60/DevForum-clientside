@@ -1,5 +1,6 @@
 # 🚀 DevForum
 **DevForum** is a full-featured **MERN Stack** online discussion forum. It allows people to create posts, comment, upvote/downvote, share, and interact through a secure, responsive, role-based platform. Admins can manage users, handle reports, make announcements, and track forum activity.
+![Homepage](https://i.ibb.co/8D7RnwjS/14-07-2025-20-32-33-REC.png)
 
 ---
 
@@ -37,9 +38,9 @@
 ## 🔗 Live Links
 | Resource | Link |
 |-----------------------|--------------------------------------|
-| **Frontend Live** | [Visit Site](https://your-live-site.com) |
-| **Client GitHub** | [Client Repo](https://github.com/yourusername/devforum-client) |
-| **Server GitHub** | [Server Repo](https://github.com/yourusername/devforum-server) |
+| **Frontend Live** | [Visit Site](https://devform-31142.web.app/) |
+| **Client GitHub** | [Client Repo](https://github.com/ishaq60/DevForum-clientside) |
+| **Server GitHub** | [Server Repo](https://github.com/ishaq60/DevForum-serverside) |
 
 ---
 
@@ -148,9 +149,7 @@ VITE_API_URL=http://localhost:5000
 VITE_FIREBASE_API_KEY=your-firebase-api-key
 VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
-VITE_FIREBASE_APP_ID=your-app-id
+
 VITE_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
 ```
 
@@ -175,7 +174,7 @@ npm run dev
 ```
 
 ### Access
-- Frontend: `http://localhost:3000`
+- Frontend: `http://localhost:5000`
 - Backend: `http://localhost:5000`
 
 ---
