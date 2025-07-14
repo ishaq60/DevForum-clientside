@@ -1,8 +1,13 @@
 # 🚀 DevForum
+
 **DevForum** is a full-featured **MERN Stack** online discussion forum. It allows people to create posts, comment, upvote/downvote, share, and interact through a secure, responsive, role-based platform. Admins can manage users, handle reports, make announcements, and track forum activity.
-![Homepage](https://i.ibb.co/8D7RnwjS/14-07-2025-20-32-33-REC.png)
 
 ---
+
+![DevForum Homepage Banner](https://i.ibb.co/8D7RnwjS/14-07-2025-20-32-33-REC.png)
+
+*Preview: Home Page Banner with background photo and search bar.*
+
 
 ## ✅ Features
 - 🔑 **Authentication** — Email/password login & Google social login using Firebase Auth with JWT.
