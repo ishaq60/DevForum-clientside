@@ -16,11 +16,11 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import Sidebar from "./sidebar";
+
 import useAuth from "../../Authentication/UseAuth";
 import UseUser from "../../Hooks/UseUser";
 import { toast } from "react-toastify";
-
+import Sidebar from "../Dashboard/Sidebar"
 export default function Dashboard() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
