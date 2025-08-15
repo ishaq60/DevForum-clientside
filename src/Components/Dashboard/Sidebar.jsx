@@ -1,4 +1,4 @@
-const SidebarItem = ({ icon, text, active = false, expanded }) => {
+const Sidebar = ({ icon, text, active = false, expanded }) => {
   return (
     <div
       className={`flex items-center p-4 ${
@@ -15,4 +15,4 @@ const SidebarItem = ({ icon, text, active = false, expanded }) => {
   );
 };
 
-export default SidebarItem;
+export default Sidebar;

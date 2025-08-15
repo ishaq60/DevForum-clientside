@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import SidebarItem from "./sidebar";
+import Sidebar from "./sidebar";
 import useAuth from "../../Authentication/UseAuth";
 import UseUser from "../../Hooks/UseUser";
 import { toast } from "react-toastify";
@@ -171,7 +171,7 @@ export default function Dashboard() {
               <>
                 <NavLink to="" end>
                   {({ isActive }) => (
-                    <SidebarItem
+                    <Sidebar
                       icon={<Home size={20} />}
                       text="Dashboard"
                       expanded
@@ -182,7 +182,7 @@ export default function Dashboard() {
 
                 <NavLink to="manageuser">
                   {({ isActive }) => (
-                    <SidebarItem
+                    <Sidebar
                       icon={<Users size={20} />}
                       text="Manage Users"
                       expanded
@@ -193,7 +193,7 @@ export default function Dashboard() {
 
                 <NavLink to="announcement">
                   {({ isActive }) => (
-                    <SidebarItem
+                    <Sidebar
                       icon={<Calendar size={20} />}
                       text="Announcement"
                       expanded
@@ -204,7 +204,7 @@ export default function Dashboard() {
 
                 <NavLink to="/">
                   {({ isActive }) => (
-                    <SidebarItem
+                    <Sidebar
                       icon={<HomeIcon size={20} />}
                       text="Home"
                       expanded
@@ -216,7 +216,7 @@ export default function Dashboard() {
                 <div className="mt-8 border-t border-indigo-700 pt-4">
                   <NavLink to="settings">
                     {({ isActive }) => (
-                      <SidebarItem
+                      <Sidebar
                         icon={<Settings size={20} />}
                         text="Settings"
                         expanded
@@ -227,7 +227,7 @@ export default function Dashboard() {
 
                   <NavLink to="help">
                     {({ isActive }) => (
-                      <SidebarItem
+                      <Sidebar
                         icon={<HelpCircle size={20} />}
                         text="Help"
                         expanded
@@ -241,7 +241,7 @@ export default function Dashboard() {
               <>
                 <NavLink to="/dashboard/userProfile">
                   {({ isActive }) => (
-                    <SidebarItem
+                    <Sidebar
                       icon={<User size={20} />}
                       text="My Profile"
                       expanded
@@ -252,7 +252,7 @@ export default function Dashboard() {
 
                 <NavLink to="addpost">
                   {({ isActive }) => (
-                    <SidebarItem
+                    <Sidebar
                       icon={<FilePlus size={20} />}
                       text="Add Post"
                       expanded
@@ -263,7 +263,7 @@ export default function Dashboard() {
 
                 <NavLink to="myPost">
                   {({ isActive }) => (
-                    <SidebarItem
+                    <Sidebar
                       icon={<Files size={20} />}
                       text="My Post"
                       expanded
@@ -274,7 +274,7 @@ export default function Dashboard() {
 
                 <NavLink to="/">
                   {({ isActive }) => (
-                    <SidebarItem
+                    <Sidebar
                       icon={<HomeIcon size={20} />}
                       text="Home"
                       expanded
@@ -286,7 +286,7 @@ export default function Dashboard() {
                 <div className="mt-8 border-t border-indigo-700 pt-4">
                   <NavLink to="settings">
                     {({ isActive }) => (
-                      <SidebarItem
+                      <Sidebar
                         icon={<Settings size={20} />}
                         text="Settings"
                         expanded
@@ -297,7 +297,7 @@ export default function Dashboard() {
 
                   <NavLink to="help">
                     {({ isActive }) => (
-                      <SidebarItem
+                      <Sidebar
                         icon={<HelpCircle size={20} />}
                         text="Help"
                         expanded
